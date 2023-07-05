@@ -1,6 +1,7 @@
 package com.banking.poc.bankingpoc.service;
 
 import com.banking.poc.bankingpoc.dto.AccountDto;
+import com.banking.poc.bankingpoc.dto.TransactionRequestDto;
 import com.banking.poc.bankingpoc.entity.Account;
 import com.banking.poc.bankingpoc.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,16 @@ public class AccountService {
             return accountRepository.save(account);
         }
         return null;
+    }
+
+    public Account debitTransaction(TransactionRequestDto transactionRequestDto) throws Exception {
+        Account account=accountRepository.findById(transactionRequestDto.getAccountDto()
+                .getCustomerId()).orElse(null);
+        if(account!=null){
+            account.debit(transactionRequestDto.getAmount());
+            return accountRepository.save(account);
+        }
+        return null;
+
     }
 }

@@ -1,6 +1,7 @@
 package com.banking.poc.bankingpoc.controller;
 
 import com.banking.poc.bankingpoc.dto.AccountDto;
+import com.banking.poc.bankingpoc.dto.TransactionRequestDto;
 import com.banking.poc.bankingpoc.entity.Account;
 import com.banking.poc.bankingpoc.service.AccountService;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ public class AccountController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
+
         Account account = accountService.getAccountById(id);
         if (account != null) {
             return ResponseEntity.ok(account);
@@ -45,6 +47,7 @@ public class AccountController {
 
     @PostMapping("/{id}/credit")
     public ResponseEntity<Account> creditAccount(@PathVariable Long id, @RequestBody double amount) {
+
         Account creditedAccount = accountService.creditAccount(id, amount);
         if (creditedAccount != null) {
             return ResponseEntity.ok(creditedAccount);
@@ -59,6 +62,18 @@ public class AccountController {
             Account debitedAccount = accountService.debitAccount(id, amount);
             return ResponseEntity.ok(debitedAccount);
         } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/transactions")
+    public ResponseEntity<Account>debitTransaction(@RequestBody TransactionRequestDto transactionRequestDto)
+    {
+        try{
+            Account transactionalAccount=accountService.debitTransaction(transactionRequestDto);
+            return ResponseEntity.ok(transactionalAccount);
+        } catch(Exception e)
+        {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
