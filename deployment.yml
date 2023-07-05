@@ -29,7 +29,7 @@ metadata:
     app: banking-poc-backend
 spec:
   selector:
-    app: myapp
+    app: banking-poc-backend
   ports:
     - protocol: TCP
       port: 8082
